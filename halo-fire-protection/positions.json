@@ -1,37 +1,3 @@
 {
-  "mermaid": "graph TD\n    DF[Dan Farnsworth<br/>President / CEO] --> NB[Nate Boyd<br/>VP / COO]\n    DF --> CR[Carl Roth<br/>Team Member]\n    DF --> IM[Ismael Martinez<br/>Team Member]\n    NB --> JV[Joey Van Noy<br/>Team Member]\n    NB --> RB[Rebecca Barlow<br/>Team Member]\n    \n    style DF fill:#f0a500,color:#000,stroke:#f0a500\n    style NB fill:#1e1e2e,color:#fff,stroke:#f0a500\n    style CR fill:#1e1e2e,color:#fff,stroke:#6b7280\n    style IM fill:#1e1e2e,color:#fff,stroke:#6b7280\n    style JV fill:#1e1e2e,color:#fff,stroke:#6b7280\n    style RB fill:#1e1e2e,color:#fff,stroke:#6b7280",
-  "roles": [
-    {
-      "name": "Dan Farnsworth",
-      "title": "President / CEO",
-      "reports_to": null,
-      "phone": "(480) 332-8762"
-    },
-    {
-      "name": "Nate Boyd",
-      "title": "Vice President / COO",
-      "reports_to": "Dan Farnsworth",
-      "phone": "(480) 275-0447"
-    },
-    {
-      "name": "Carl Roth",
-      "title": "Team Member",
-      "reports_to": "Dan Farnsworth"
-    },
-    {
-      "name": "Ismael Martinez",
-      "title": "Team Member",
-      "reports_to": "Dan Farnsworth"
-    },
-    {
-      "name": "Joey Van Noy",
-      "title": "Team Member",
-      "reports_to": "Nate Boyd"
-    },
-    {
-      "name": "Rebecca Barlow",
-      "title": "Team Member",
-      "reports_to": "Nate Boyd"
-    }
-  ]
+  "positions": []
 }
