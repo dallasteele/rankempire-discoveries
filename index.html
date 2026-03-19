@@ -10,10 +10,6 @@
 <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
 <script crossorigin src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
-<!-- ReactFlow -->
-<script crossorigin src="https://unpkg.com/@xyflow/react@12/dist/umd/index.js"></script>
-<link href="https://unpkg.com/@xyflow/react@12/dist/style.css" rel="stylesheet">
-
 <!-- Mermaid -->
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
 
@@ -191,25 +187,8 @@
 
   .tab-content { max-width: 1200px; margin: 0 auto; padding: 24px 40px 60px; }
 
-  .process-map-container { height: 600px; background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
-  .react-flow__node { border-radius: 10px !important; font-size: 13px !important; }
-  .react-flow__attribution { display: none !important; }
-  .react-flow__background { background: var(--bg-secondary) !important; }
-  .react-flow__minimap { background: var(--bg-primary) !important; border-radius: 8px !important; border: 1px solid var(--border) !important; }
-  .react-flow__controls { border-radius: 8px !important; overflow: hidden; border: 1px solid var(--border) !important; }
-  .react-flow__controls button { background: var(--bg-card) !important; color: var(--text-primary) !important; border-bottom: 1px solid var(--border) !important; fill: var(--text-primary) !important; }
-  .react-flow__controls button:hover { background: var(--bg-elevated) !important; }
-  .react-flow__controls svg { fill: var(--text-primary) !important; }
-
-  .rf-node { padding: 14px 20px; border-radius: 10px; min-width: 180px; text-align: center; font-weight: 600; font-size: 13px; line-height: 1.4; box-shadow: 0 4px 12px rgba(0,0,0,0.4); }
-  .rf-node.process { background: var(--bg-card); border: 1px solid var(--border); color: var(--text-primary); }
-  .rf-node.pain { background: #1a0a0a; border: 1px solid #3b1111; color: #fca5a5; }
-  .rf-node.automation { background: #0a1a0a; border: 1px solid #113b11; color: #86efac; }
-  .rf-node.start { background: var(--accent); border: 2px solid var(--accent); color: var(--bg-primary); font-weight: 800; }
-  .rf-node.decision { background: #1a1a0a; border: 1px solid #3b3b11; color: #fde68a; }
-  .rf-node.end { background: #0a1a0a; border: 2px solid var(--green); color: var(--green); font-weight: 800; }
-  .rf-node .node-icon { font-size: 18px; margin-bottom: 6px; }
-  .rf-node .node-label { display: block; }
+  .mermaid-diagram-container { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 12px; padding: 32px; min-height: 400px; display: flex; align-items: center; justify-content: center; overflow: auto; }
+  .mermaid-diagram-container svg { max-width: 100%; height: auto; }
 
   .org-chart-container { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 12px; padding: 32px; min-height: 400px; display: flex; align-items: center; justify-content: center; }
   .org-chart-container svg { max-width: 100%; height: auto; }
@@ -257,8 +236,7 @@
     .tabs-container { padding: 0 20px; }
     .tab { padding: 12px 16px; font-size: 13px; }
     .tab-content { padding: 16px 20px 40px; }
-    .process-map-container { height: 450px; }
-    .report-container { padding: 24px; }
+.report-container { padding: 24px; }
     .cta-section { padding: 0 20px 24px; }
   }
 </style>
@@ -320,37 +298,103 @@ function AccessGate({ onCodeSubmit }) {
   );
 }
 
-function ProcessNode({ data }) {
-  const typeClass = data.nodeType || 'process';
-  return (
-    <div className={'rf-node ' + typeClass}>
-      {data.icon && <div className="node-icon">{data.icon}</div>}
-      <span className="node-label">{data.label}</span>
-    </div>
-  );
-}
-const nodeTypes = { processNode: ProcessNode };
+const MERMAID_CONFIG = {
+  startOnLoad: false,
+  theme: 'dark',
+  themeVariables: {
+    primaryColor: '#13131f',
+    primaryBorderColor: '#f0a500',
+    primaryTextColor: '#f0f6ff',
+    lineColor: '#6b7280',
+    secondaryColor: '#1a1a2e',
+    tertiaryColor: '#0d0d14',
+    edgeLabelBackground: '#13131f',
+    fontFamily: '"Segoe UI", sans-serif',
+    fontSize: '14px',
+  },
+  flowchart: { htmlLabels: true, curve: 'basis', useMaxWidth: true, padding: 20 },
+};
 
-function ProcessMapTab({ processMapData }) {
-  if (!processMapData || !processMapData.nodes || processMapData.nodes.length === 0) {
-    return (<div className="empty-state"><h3>Process Map Not Available</h3><p>The interactive process map has not been generated for this report yet.</p></div>);
+// Extract first graph TD / flowchart fenced block from markdown.
+// If headingHint given, prefers the block after that heading.
+function extractMermaidBlock(markdown, headingHint) {
+  if (!markdown) return null;
+  if (headingHint) {
+    const re = new RegExp('##?\\s*' + headingHint + '[\\s\\S]*?```(?:mermaid)?\\s*\\n([\\s\\S]*?)```', 'i');
+    const m = markdown.match(re);
+    if (m && /^(graph|flowchart)\s/i.test(m[1].trim())) return m[1].trim();
   }
-  const nodes = processMapData.nodes.map(n => ({ ...n, type: 'processNode', data: { ...n.data } }));
-  const edges = (processMapData.edges || []).map(e => ({ ...e, style: { stroke: '#f0a500', strokeWidth: 2 }, animated: e.animated !== false, markerEnd: { type: 'arrowclosed', color: '#f0a500' } }));
-  const RF = window.ReactFlow || window.XYFlow;
-  if (!RF || !RF.ReactFlow) {
-    return (<div className="empty-state"><h3>Loading Process Map...</h3><p>Please wait while the library loads.</p></div>);
+  const fencedRe = /```(?:mermaid)?\s*\n([\s\S]*?)```/g;
+  let match;
+  while ((match = fencedRe.exec(markdown)) !== null) {
+    const code = match[1].trim();
+    if (/^(graph|flowchart)\s/i.test(code)) return code;
   }
-  const { ReactFlow, Controls, MiniMap, Background } = RF;
-  return (
-    <div className="process-map-container">
-      <ReactFlow nodes={nodes} edges={edges} nodeTypes={nodeTypes} fitView fitViewOptions={{ padding: 0.3 }} minZoom={0.3} maxZoom={2} defaultEdgeOptions={{ type: 'smoothstep' }} proOptions={{ hideAttribution: true }} style={{ background: '#0d0d14' }}>
-        <Controls />
-        <MiniMap nodeColor={() => '#f0a500'} />
-        <Background color="#1e1e2e" gap={20} />
-      </ReactFlow>
+  return null;
+}
+
+// Convert ReactFlow JSON to a Mermaid graph TD string (fallback).
+function reactFlowToMermaid(data) {
+  if (!data || !data.nodes || data.nodes.length === 0) return null;
+  const lines = ['graph TD'];
+  data.nodes.forEach(node => {
+    const id = node.id.replace(/[^a-zA-Z0-9_]/g, '_');
+    const label = (node.data && node.data.label) ? node.data.label : node.id;
+    const safe = label.replace(/"/g, "'");
+    const t = (node.data && node.data.nodeType) || 'process';
+    if (t === 'decision') lines.push('  ' + id + '{' + safe + '}');
+    else if (t === 'start' || t === 'end') lines.push('  ' + id + '(["' + safe + '"])');
+    else lines.push('  ' + id + '["' + safe + '"]');
+  });
+  (data.edges || []).forEach(e => {
+    const s = e.source.replace(/[^a-zA-Z0-9_]/g, '_');
+    const t = e.target.replace(/[^a-zA-Z0-9_]/g, '_');
+    const lbl = e.label ? ('|' + e.label + '|') : '';
+    lines.push('  ' + s + ' -->' + lbl + ' ' + t);
+  });
+  return lines.join('\n');
+}
+
+let mermaidIdCounter = 0;
+function nextMermaidId() { return 'mermaid-svg-' + (++mermaidIdCounter); }
+
+function ProcessMapTab({ processMapData, reportMarkdown }) {
+  const containerRef = useRef(null);
+  useEffect(() => {
+    if (!containerRef.current) return;
+    let mermaidCode = null;
+    if (reportMarkdown) {
+      mermaidCode = extractMermaidBlock(reportMarkdown, 'Workflow')
+                 || extractMermaidBlock(reportMarkdown, 'Process')
+                 || extractMermaidBlock(reportMarkdown, 'Flow');
+    }
+    if (!mermaidCode && processMapData) mermaidCode = reactFlowToMermaid(processMapData);
+    if (!mermaidCode) return;
+    (async () => {
+      try {
+        mermaid.initialize(MERMAID_CONFIG);
+        const { svg } = await mermaid.render(nextMermaidId(), mermaidCode);
+        if (containerRef.current) setSanitizedContent(containerRef.current, svg, true);
+      } catch (err) {
+        if (containerRef.current) containerRef.current.textContent = 'Process map rendering error: ' + err.message;
+      }
+    })();
+  }, [processMapData, reportMarkdown]);
+
+  const hasMermaid = reportMarkdown && (
+    extractMermaidBlock(reportMarkdown, 'Workflow') ||
+    extractMermaidBlock(reportMarkdown, 'Process') ||
+    extractMermaidBlock(reportMarkdown, 'Flow')
+  );
+  const hasRF = processMapData && processMapData.nodes && processMapData.nodes.length > 0;
+  if (!hasMermaid && !hasRF) return (
+    <div className="empty-state">
+      <div className="icon">&#x1F5FA;</div>
+      <h3>Process Map Not Available</h3>
+      <p>Process map will be available after discovery is complete.</p>
     </div>
   );
+  return <div className="mermaid-diagram-container" ref={containerRef}><div className="spinner" style={{ margin: '40px auto' }}></div></div>;
 }
 
 function OrgChartTab({ positionsData }) {
@@ -358,7 +402,9 @@ function OrgChartTab({ positionsData }) {
   useEffect(() => {
     if (!positionsData || !containerRef.current) return;
     let mermaidCode = 'graph TD\n';
-    if (positionsData.positions && Array.isArray(positionsData.positions)) {
+    if (positionsData.mermaid) {
+      mermaidCode = positionsData.mermaid;
+    } else if (positionsData.positions && Array.isArray(positionsData.positions)) {
       positionsData.positions.forEach((pos, i) => {
         const id = pos.id || ('pos_' + i);
         const title = pos.title || pos.name || 'Unknown';
@@ -371,13 +417,11 @@ function OrgChartTab({ positionsData }) {
         const parentId = pos.reports_to || pos.reportsTo || pos.parent;
         if (parentId) mermaidCode += '  ' + parentId + ' --> ' + id + '\n';
       });
-    } else if (positionsData.mermaid) {
-      mermaidCode = positionsData.mermaid;
     }
     (async () => {
       try {
-        mermaid.initialize({ startOnLoad: false, theme: 'dark', themeVariables: { primaryColor: '#13131f', primaryBorderColor: '#f0a500', primaryTextColor: '#f0f6ff', lineColor: '#6b7280', secondaryColor: '#1a1a2e', tertiaryColor: '#0d0d14', fontFamily: '"Segoe UI", sans-serif', fontSize: '14px' }, flowchart: { htmlLabels: true, curve: 'basis', useMaxWidth: true, padding: 20 } });
-        const { svg } = await mermaid.render('orgchart-svg', mermaidCode);
+        mermaid.initialize(MERMAID_CONFIG);
+        const { svg } = await mermaid.render(nextMermaidId(), mermaidCode);
         if (containerRef.current) setSanitizedContent(containerRef.current, svg, true);
       } catch (err) {
         if (containerRef.current) containerRef.current.textContent = 'Chart rendering error: ' + err.message;
@@ -406,7 +450,7 @@ function ReportView({ slug, metadata, processMapData, positionsData, reportMarkd
   const stats = (metadata && metadata.stats) || {};
   const demoSubject = encodeURIComponent('Demo Request - RankEmpire for ' + company);
   const tabs = [
-    { id: 'process-map', label: 'Interactive Process Map' },
+    { id: 'process-map', label: 'Process Map' },
     { id: 'org-chart', label: 'Org Chart' },
     { id: 'report', label: 'Full Report' },
   ];
@@ -432,7 +476,7 @@ function ReportView({ slug, metadata, processMapData, positionsData, reportMarkd
         {tabs.map(tab => <div key={tab.id} className={'tab' + (activeTab === tab.id ? ' active' : '')} onClick={() => setActiveTab(tab.id)}>{tab.label}</div>)}
       </div></div>
       <div className="tab-content">
-        {activeTab === 'process-map' && <ProcessMapTab processMapData={processMapData} />}
+        {activeTab === 'process-map' && <ProcessMapTab processMapData={processMapData} reportMarkdown={reportMarkdown} />}
         {activeTab === 'org-chart' && <OrgChartTab positionsData={positionsData} />}
         {activeTab === 'report' && <ReportTab reportMarkdown={reportMarkdown} />}
       </div>
