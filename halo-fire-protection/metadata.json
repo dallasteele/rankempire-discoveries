@@ -1,17 +1,31 @@
 {
   "client_id": "ab02ab16",
   "slug": "halo-fire-protection",
-  "company": "Halo Fire Protection",
-  "industry": "fire protection",
+  "company": "Halo Fire Protection, LLC",
+  "industry": "Fire Protection / Construction",
   "email": "dallasteele@me.com",
   "status": "discovery",
   "access_code": "6745DE5E-91E",
-  "session_id": "6a34cdc7",
-  "session_status": "complete",
-  "has_report": true,
-  "has_diagram": true,
-  "client_created_at": "2026-03-16T08:22:12.389447",
-  "session_updated_at": "2026-03-17T15:12:56.849545",
-  "published_at": "2026-03-18T19:29:00.589082",
+  "founded": 2007,
+  "headquarters": "Mesa, AZ (4811 E Julep St Suite 124)",
+  "employees": 26,
+  "states_licensed": 30,
+  "projects_out_of_state": "200+",
+  "leadership": {
+    "ceo": "Dan Farnsworth",
+    "coo": "Nate Boyd"
+  },
+  "services": [
+    "Fire sprinkler installation",
+    "Alarm service and monitoring",
+    "Fire extinguishers",
+    "Design and consulting",
+    "Backflow testing",
+    "Kitchen hood systems",
+    "Fire pump installation"
+  ],
+  "website": "https://halofireus.com",
+  "phone": "(480) 325-2280",
+  "service_phone": "(480) 299-5652",
   "generator": "HAL RE / RankEmpire"
 }
