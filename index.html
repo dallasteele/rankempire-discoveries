@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RankEmpire Discovery Report</title>
+
+<!-- React 18 -->
+<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+<!-- ReactFlow -->
+<script crossorigin src="https://unpkg.com/@xyflow/react@12/dist/umd/index.js"></script>
+<link href="https://unpkg.com/@xyflow/react@12/dist/style.css" rel="stylesheet">
+
+<!-- Mermaid -->
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+
+<!-- Marked + DOMPurify for safe markdown rendering -->
+<script src="https://cdn.jsdelivr.net/npm/marked@15/marked.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dompurify@3/dist/purify.min.js"></script>
+
+<!-- Safe DOM insertion helper: parses HTML through DOMPurify then uses DOM APIs -->
+<script>
+  // setSanitizedContent: safely sets element content from untrusted HTML
+  // Uses DOMPurify to sanitize, then DOM range/fragment to insert (no raw innerHTML)
+  function setSanitizedContent(element, rawHtml, svgMode) {
+    if (!element) return;
+    var clean = svgMode
+      ? DOMPurify.sanitize(rawHtml, { USE_PROFILES: { svg: true, svgFilters: true }, ADD_TAGS: ['style'] })
+      : DOMPurify.sanitize(rawHtml);
+    // Use createContextualFragment for safe DOM insertion of sanitized content
+    while (element.firstChild) element.removeChild(element.firstChild);
+    var range = document.createRange();
+    range.selectNode(element);
+    var frag = range.createContextualFragment(clean);
+    element.appendChild(frag);
+  }
+</script>
+
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg-primary: #06060a;
+    --bg-secondary: #0d0d14;
+    --bg-card: #13131f;
+    --bg-elevated: #1a1a2e;
+    --accent: #f0a500;
+    --accent-dim: #b37d00;
+    --text-primary: #f0f6ff;
+    --text-secondary: #a1a1aa;
+    --text-muted: #6b7280;
+    --border: #1e1e2e;
+    --red: #ef4444;
+    --green: #22c55e;
+  }
+
+  body {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg-primary); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--accent-dim); }
+
+  .access-gate {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 24px;
+  }
+  .access-gate .logo {
+    font-size: 36px;
+    font-weight: 900;
+    color: var(--accent);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .access-gate .subtitle {
+    color: var(--text-muted);
+    font-size: 13px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-bottom: 48px;
+  }
+  .access-form {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 40px;
+    max-width: 420px;
+    width: 100%;
+    text-align: center;
+  }
+  .access-form h2 { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
+  .access-form p { color: var(--text-secondary); font-size: 14px; margin-bottom: 28px; }
+  .access-form input {
+    width: 100%;
+    padding: 14px 18px;
+    background: var(--bg-primary);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--text-primary);
+    font-size: 16px;
+    letter-spacing: 2px;
+    text-align: center;
+    outline: none;
+    transition: border-color 0.2s;
+    font-family: 'Consolas', 'Monaco', monospace;
+  }
+  .access-form input:focus { border-color: var(--accent); }
+  .access-form input::placeholder { color: var(--text-muted); letter-spacing: 1px; font-family: 'Segoe UI', sans-serif; }
+  .access-form button {
+    width: 100%;
+    margin-top: 16px;
+    padding: 14px;
+    background: var(--accent);
+    color: var(--bg-primary);
+    border: none;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+  .access-form button:hover { opacity: 0.9; }
+  .access-form .error { color: var(--red); font-size: 13px; margin-top: 12px; }
+
+  .loading-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    gap: 20px;
+  }
+  .spinner {
+    width: 48px;
+    height: 48px;
+    border: 3px solid var(--border);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .hero {
+    padding: 48px 40px 32px;
+    border-bottom: 2px solid var(--accent);
+    background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-elevated) 100%);
+  }
+  .hero-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .hero .brand { font-size: 14px; font-weight: 900; color: var(--accent); letter-spacing: 3px; text-transform: uppercase; margin-bottom: 12px; }
+  .hero h1 { font-size: 32px; font-weight: 800; color: var(--text-primary); margin-bottom: 6px; }
+  .hero .meta { color: var(--text-muted); font-size: 14px; }
+  .hero .meta span { color: var(--accent); font-weight: 600; }
+  .hero .badge { background: var(--accent); color: var(--bg-primary); font-size: 11px; font-weight: 700; padding: 8px 18px; border-radius: 24px; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap; }
+
+  .stats-row { max-width: 1200px; margin: 0 auto; display: flex; gap: 16px; padding: 24px 40px; flex-wrap: wrap; }
+  .stat-card { flex: 1; min-width: 160px; background: var(--bg-secondary); border: 1px solid var(--border); border-top: 3px solid var(--accent); border-radius: 10px; padding: 20px; text-align: center; }
+  .stat-card.green { border-top-color: var(--green); }
+  .stat-card .value { font-size: 28px; font-weight: 800; color: var(--accent); }
+  .stat-card.green .value { color: var(--green); }
+  .stat-card .label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1.5px; margin-top: 6px; }
+
+  .tabs-container { max-width: 1200px; margin: 0 auto; padding: 0 40px; }
+  .tabs { display: flex; gap: 0; border-bottom: 1px solid var(--border); }
+  .tab { padding: 16px 28px; font-size: 14px; font-weight: 600; color: var(--text-muted); cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.2s; user-select: none; white-space: nowrap; }
+  .tab:hover { color: var(--text-secondary); }
+  .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+  .tab-content { max-width: 1200px; margin: 0 auto; padding: 24px 40px 60px; }
+
+  .process-map-container { height: 600px; background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+  .react-flow__node { border-radius: 10px !important; font-size: 13px !important; }
+  .react-flow__attribution { display: none !important; }
+  .react-flow__background { background: var(--bg-secondary) !important; }
+  .react-flow__minimap { background: var(--bg-primary) !important; border-radius: 8px !important; border: 1px solid var(--border) !important; }
+  .react-flow__controls { border-radius: 8px !important; overflow: hidden; border: 1px solid var(--border) !important; }
+  .react-flow__controls button { background: var(--bg-card) !important; color: var(--text-primary) !important; border-bottom: 1px solid var(--border) !important; fill: var(--text-primary) !important; }
+  .react-flow__controls button:hover { background: var(--bg-elevated) !important; }
+  .react-flow__controls svg { fill: var(--text-primary) !important; }
+
+  .rf-node { padding: 14px 20px; border-radius: 10px; min-width: 180px; text-align: center; font-weight: 600; font-size: 13px; line-height: 1.4; box-shadow: 0 4px 12px rgba(0,0,0,0.4); }
+  .rf-node.process { background: var(--bg-card); border: 1px solid var(--border); color: var(--text-primary); }
+  .rf-node.pain { background: #1a0a0a; border: 1px solid #3b1111; color: #fca5a5; }
+  .rf-node.automation { background: #0a1a0a; border: 1px solid #113b11; color: #86efac; }
+  .rf-node.start { background: var(--accent); border: 2px solid var(--accent); color: var(--bg-primary); font-weight: 800; }
+  .rf-node.decision { background: #1a1a0a; border: 1px solid #3b3b11; color: #fde68a; }
+  .rf-node.end { background: #0a1a0a; border: 2px solid var(--green); color: var(--green); font-weight: 800; }
+  .rf-node .node-icon { font-size: 18px; margin-bottom: 6px; }
+  .rf-node .node-label { display: block; }
+
+  .org-chart-container { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 12px; padding: 32px; min-height: 400px; display: flex; align-items: center; justify-content: center; }
+  .org-chart-container svg { max-width: 100%; height: auto; }
+
+  .report-container { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 12px; padding: 40px 48px; line-height: 1.7; font-size: 15px; }
+  .report-container h1 { font-size: 28px; font-weight: 800; color: var(--accent); margin: 32px 0 16px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+  .report-container h1:first-child { margin-top: 0; }
+  .report-container h2 { font-size: 22px; font-weight: 700; color: var(--text-primary); margin: 28px 0 12px; }
+  .report-container h3 { font-size: 18px; font-weight: 600; color: var(--accent); margin: 24px 0 10px; }
+  .report-container p { color: var(--text-secondary); margin-bottom: 14px; }
+  .report-container ul, .report-container ol { color: var(--text-secondary); padding-left: 24px; margin-bottom: 14px; }
+  .report-container li { margin-bottom: 6px; }
+  .report-container strong { color: var(--text-primary); }
+  .report-container code { background: var(--bg-primary); padding: 2px 8px; border-radius: 4px; font-size: 13px; color: var(--accent); }
+  .report-container pre { background: var(--bg-primary); border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; overflow-x: auto; margin-bottom: 16px; }
+  .report-container pre code { padding: 0; background: none; }
+  .report-container blockquote { border-left: 3px solid var(--accent); padding: 12px 20px; margin: 16px 0; background: var(--bg-primary); border-radius: 0 8px 8px 0; }
+  .report-container blockquote p { color: var(--text-secondary); margin: 0; }
+  .report-container table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+  .report-container th { background: var(--bg-primary); color: var(--accent); text-align: left; padding: 10px 14px; border: 1px solid var(--border); font-weight: 700; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; }
+  .report-container td { padding: 10px 14px; border: 1px solid var(--border); color: var(--text-secondary); }
+  .report-container tr:nth-child(even) td { background: var(--bg-primary); }
+  .report-container a { color: var(--accent); text-decoration: none; }
+  .report-container a:hover { text-decoration: underline; }
+  .report-container hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+
+  .empty-state { text-align: center; padding: 60px 20px; color: var(--text-muted); }
+  .empty-state .icon { font-size: 48px; margin-bottom: 16px; }
+  .empty-state h3 { font-size: 18px; color: var(--text-secondary); margin-bottom: 8px; }
+
+  .footer { text-align: center; padding: 32px 20px; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 12px; max-width: 1200px; margin: 0 auto; }
+  .footer strong { color: var(--accent); }
+
+  .cta-section { max-width: 1200px; margin: 0 auto; padding: 0 40px 32px; }
+  .cta-card { background: linear-gradient(135deg, var(--bg-elevated), var(--bg-secondary)); border: 1px solid var(--accent); border-radius: 16px; padding: 36px; text-align: center; }
+  .cta-card h3 { font-size: 22px; font-weight: 700; margin-bottom: 8px; }
+  .cta-card p { color: var(--text-secondary); margin-bottom: 24px; font-size: 15px; }
+  .cta-card a { display: inline-block; background: var(--accent); color: var(--bg-primary); font-size: 15px; font-weight: 700; padding: 14px 40px; border-radius: 10px; text-decoration: none; letter-spacing: 1px; text-transform: uppercase; transition: opacity 0.2s; }
+  .cta-card a:hover { opacity: 0.9; }
+
+  @media (max-width: 768px) {
+    .hero { padding: 32px 20px 24px; }
+    .hero h1 { font-size: 24px; }
+    .stats-row { padding: 16px 20px; }
+    .tabs-container { padding: 0 20px; }
+    .tab { padding: 12px 16px; font-size: 13px; }
+    .tab-content { padding: 16px 20px 40px; }
+    .process-map-container { height: 450px; }
+    .report-container { padding: 24px; }
+    .cta-section { padding: 0 20px 24px; }
+  }
+</style>
+</head>
+<body>
+
+<div id="root"></div>
+
+<script type="text/babel">
+const { useState, useEffect, useRef } = React;
+
+const GITHUB_RAW_BASE = 'https://raw.githubusercontent.com/dallasteele/rankempire-discoveries/main';
+const CLIENTS_URL = GITHUB_RAW_BASE + '/clients.json';
+
+async function fetchJSON(url) {
+  const res = await fetch(url, { cache: 'no-cache' });
+  if (!res.ok) throw new Error('HTTP ' + res.status);
+  return res.json();
+}
+async function fetchText(url) {
+  const res = await fetch(url, { cache: 'no-cache' });
+  if (!res.ok) throw new Error('HTTP ' + res.status);
+  return res.text();
+}
+
+function AccessGate({ onCodeSubmit }) {
+  const [code, setCode] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!code.trim()) { setError('Please enter an access code'); return; }
+    setLoading(true);
+    setError('');
+    try {
+      const clients = await fetchJSON(CLIENTS_URL);
+      const slug = clients[code.trim()];
+      if (!slug) { setError('Invalid access code. Please check and try again.'); setLoading(false); return; }
+      onCodeSubmit(code.trim(), slug);
+    } catch (err) {
+      setError('Unable to verify access code. Please try again later.');
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="access-gate">
+      <div className="logo">RankEmpire</div>
+      <div className="subtitle">AI Business Intelligence</div>
+      <form className="access-form" onSubmit={handleSubmit}>
+        <h2>Access Your Report</h2>
+        <p>Enter the access code from your email to view your personalized discovery report.</p>
+        <input type="text" placeholder="Enter access code" value={code} onChange={e => setCode(e.target.value)} autoFocus disabled={loading} />
+        <button type="submit" disabled={loading}>{loading ? 'Verifying...' : 'View Report'}</button>
+        {error && <div className="error">{error}</div>}
+      </form>
+    </div>
+  );
+}
+
+function ProcessNode({ data }) {
+  const typeClass = data.nodeType || 'process';
+  return (
+    <div className={'rf-node ' + typeClass}>
+      {data.icon && <div className="node-icon">{data.icon}</div>}
+      <span className="node-label">{data.label}</span>
+    </div>
+  );
+}
+const nodeTypes = { processNode: ProcessNode };
+
+function ProcessMapTab({ processMapData }) {
+  if (!processMapData || !processMapData.nodes || processMapData.nodes.length === 0) {
+    return (<div className="empty-state"><h3>Process Map Not Available</h3><p>The interactive process map has not been generated for this report yet.</p></div>);
+  }
+  const nodes = processMapData.nodes.map(n => ({ ...n, type: 'processNode', data: { ...n.data } }));
+  const edges = (processMapData.edges || []).map(e => ({ ...e, style: { stroke: '#f0a500', strokeWidth: 2 }, animated: e.animated !== false, markerEnd: { type: 'arrowclosed', color: '#f0a500' } }));
+  const RF = window.XYFlow;
+  if (!RF || !RF.ReactFlow) {
+    return (<div className="empty-state"><h3>Loading Process Map...</h3><p>Please wait while the library loads.</p></div>);
+  }
+  const { ReactFlow, Controls, MiniMap, Background } = RF;
+  return (
+    <div className="process-map-container">
+      <ReactFlow nodes={nodes} edges={edges} nodeTypes={nodeTypes} fitView fitViewOptions={{ padding: 0.3 }} minZoom={0.3} maxZoom={2} defaultEdgeOptions={{ type: 'smoothstep' }} proOptions={{ hideAttribution: true }} style={{ background: '#0d0d14' }}>
+        <Controls />
+        <MiniMap nodeColor={() => '#f0a500'} />
+        <Background color="#1e1e2e" gap={20} />
+      </ReactFlow>
+    </div>
+  );
+}
+
+function OrgChartTab({ positionsData }) {
+  const containerRef = useRef(null);
+  useEffect(() => {
+    if (!positionsData || !containerRef.current) return;
+    let mermaidCode = 'graph TD\n';
+    if (positionsData.positions && Array.isArray(positionsData.positions)) {
+      positionsData.positions.forEach((pos, i) => {
+        const id = pos.id || ('pos_' + i);
+        const title = pos.title || pos.name || 'Unknown';
+        const person = pos.person || pos.incumbent || '';
+        const label = person ? (title + '<br/>' + person) : title;
+        mermaidCode += '  ' + id + '["' + label + '"]\n';
+      });
+      positionsData.positions.forEach((pos, i) => {
+        const id = pos.id || ('pos_' + i);
+        const parentId = pos.reports_to || pos.reportsTo || pos.parent;
+        if (parentId) mermaidCode += '  ' + parentId + ' --> ' + id + '\n';
+      });
+    } else if (positionsData.mermaid) {
+      mermaidCode = positionsData.mermaid;
+    }
+    (async () => {
+      try {
+        mermaid.initialize({ startOnLoad: false, theme: 'dark', themeVariables: { primaryColor: '#13131f', primaryBorderColor: '#f0a500', primaryTextColor: '#f0f6ff', lineColor: '#6b7280', secondaryColor: '#1a1a2e', tertiaryColor: '#0d0d14', fontFamily: '"Segoe UI", sans-serif', fontSize: '14px' }, flowchart: { htmlLabels: true, curve: 'basis', useMaxWidth: true, padding: 20 } });
+        const { svg } = await mermaid.render('orgchart-svg', mermaidCode);
+        if (containerRef.current) setSanitizedContent(containerRef.current, svg, true);
+      } catch (err) {
+        if (containerRef.current) containerRef.current.textContent = 'Chart rendering error: ' + err.message;
+      }
+    })();
+  }, [positionsData]);
+  if (!positionsData) return (<div className="empty-state"><h3>Org Chart Not Available</h3><p>The organization chart has not been generated for this report yet.</p></div>);
+  return <div className="org-chart-container" ref={containerRef}><div className="spinner" style={{ margin: '40px auto' }}></div></div>;
+}
+
+function ReportTab({ reportMarkdown }) {
+  const containerRef = useRef(null);
+  useEffect(() => {
+    if (!reportMarkdown || !containerRef.current) return;
+    var rawHtml = marked.parse(reportMarkdown);
+    setSanitizedContent(containerRef.current, rawHtml, false);
+  }, [reportMarkdown]);
+  if (!reportMarkdown) return (<div className="empty-state"><h3>Full Report Not Available</h3><p>The detailed discovery report has not been generated yet.</p></div>);
+  return <div className="report-container" ref={containerRef} />;
+}
+
+function ReportView({ slug, metadata, processMapData, positionsData, reportMarkdown }) {
+  const [activeTab, setActiveTab] = useState('process-map');
+  const company = (metadata && (metadata.company || metadata.name)) || slug.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+  const industry = (metadata && metadata.industry) || '';
+  const stats = (metadata && metadata.stats) || {};
+  const demoSubject = encodeURIComponent('Demo Request - RankEmpire for ' + company);
+  const tabs = [
+    { id: 'process-map', label: 'Interactive Process Map' },
+    { id: 'org-chart', label: 'Org Chart' },
+    { id: 'report', label: 'Full Report' },
+  ];
+  return (
+    <div>
+      <div className="hero"><div className="hero-inner">
+        <div>
+          <div className="brand">RankEmpire</div>
+          <h1>{company}</h1>
+          <div className="meta">Discovery Analysis{industry && <span> &bull; {industry}</span>}{metadata && metadata.status && <span> &bull; Status: <span>{metadata.status}</span></span>}</div>
+        </div>
+        <div className="badge">Discovery Report</div>
+      </div></div>
+      {(stats.employees || stats.states || stats.hours_saved) && (
+        <div className="stats-row">
+          {stats.employees && <div className="stat-card"><div className="value">{stats.employees}</div><div className="label">Staff Members</div></div>}
+          {stats.states && <div className="stat-card"><div className="value">{stats.states}</div><div className="label">States Active</div></div>}
+          {stats.revenue && <div className="stat-card"><div className="value">{stats.revenue}</div><div className="label">Revenue</div></div>}
+          {stats.hours_saved && <div className="stat-card green"><div className="value">{stats.hours_saved}</div><div className="label">Potential Savings</div></div>}
+        </div>
+      )}
+      <div className="tabs-container"><div className="tabs">
+        {tabs.map(tab => <div key={tab.id} className={'tab' + (activeTab === tab.id ? ' active' : '')} onClick={() => setActiveTab(tab.id)}>{tab.label}</div>)}
+      </div></div>
+      <div className="tab-content">
+        {activeTab === 'process-map' && <ProcessMapTab processMapData={processMapData} />}
+        {activeTab === 'org-chart' && <OrgChartTab positionsData={positionsData} />}
+        {activeTab === 'report' && <ReportTab reportMarkdown={reportMarkdown} />}
+      </div>
+      <div className="cta-section"><div className="cta-card">
+        <h3>Ready to eliminate the bottlenecks?</h3>
+        <p>Let's build the roadmap to automate your business processes together.</p>
+        <a href={'mailto:dallasteele@me.com?subject=' + demoSubject}>Schedule a Demo</a>
+      </div></div>
+      <div className="footer">Powered by <strong>RankEmpire AI</strong> &bull; Confidential &bull; Generated for {company}</div>
+    </div>
+  );
+}
+
+function App() {
+  const [state, setState] = useState('init');
+  const [slug, setSlug] = useState(null);
+  const [metadata, setMetadata] = useState(null);
+  const [processMapData, setProcessMapData] = useState(null);
+  const [positionsData, setPositionsData] = useState(null);
+  const [reportMarkdown, setReportMarkdown] = useState(null);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const code = params.get('code');
+    if (code) lookupAndLoad(code); else setState('gate');
+  }, []);
+
+  const lookupAndLoad = async (code) => {
+    setState('loading');
+    try {
+      const clients = await fetchJSON(CLIENTS_URL);
+      const foundSlug = clients[code];
+      if (!foundSlug) { setError('Invalid access code.'); setState('gate'); return; }
+      setSlug(foundSlug);
+      await loadData(foundSlug);
+    } catch (err) { setError('Unable to load report data.'); setState('error'); }
+  };
+
+  const loadData = async (s) => {
+    setState('loading');
+    const base = GITHUB_RAW_BASE + '/' + s;
+    const results = await Promise.allSettled([
+      fetchJSON(base + '/metadata.json'),
+      fetchJSON(base + '/process-map.json'),
+      fetchJSON(base + '/positions.json'),
+      fetchText(base + '/discovery-report.md'),
+    ]);
+    if (results[0].status === 'fulfilled') setMetadata(results[0].value);
+    if (results[1].status === 'fulfilled') setProcessMapData(results[1].value);
+    if (results[2].status === 'fulfilled') setPositionsData(results[2].value);
+    if (results[3].status === 'fulfilled') setReportMarkdown(results[3].value);
+    if (!results.some(r => r.status === 'fulfilled')) { setError('No report data found.'); setState('error'); return; }
+    setState('report');
+  };
+
+  const handleCodeSubmit = (code, foundSlug) => {
+    const url = new URL(window.location);
+    url.searchParams.set('code', code);
+    window.history.pushState({}, '', url);
+    setSlug(foundSlug);
+    loadData(foundSlug);
+  };
+
+  if (state === 'init' || state === 'loading') return (<div className="loading-container"><div className="spinner"></div><div style={{ color: '#6b7280', fontSize: '14px' }}>Loading your discovery report...</div></div>);
+  if (state === 'gate') return <AccessGate onCodeSubmit={handleCodeSubmit} />;
+  if (state === 'error') return (<div className="access-gate"><div className="logo">RankEmpire</div><div className="subtitle">AI Business Intelligence</div><div className="access-form"><h2>Something went wrong</h2><p>{error}</p><button onClick={() => { setError(''); setState('gate'); }}>Try Again</button></div></div>);
+  return <ReportView slug={slug} metadata={metadata} processMapData={processMapData} positionsData={positionsData} reportMarkdown={reportMarkdown} />;
+}
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<App />);
+</script>
+</body>
+</html>
