@@ -1,3 +1,30 @@
 {
-  "positions": []
+  "mermaid": "graph TD\n    WP[Wade Perkins<br/>Owner/President] --> AE[Aidan<br/>Lead Estimator]\n    WP --> IC[Isaac<br/>Admin/Coordinator]\n    WP --> MP[Max<br/>Project Manager]\n    AE --> DE[Devin<br/>Estimator]\n    \n    style WP fill:#f0a500,color:#000,stroke:#f0a500\n    style AE fill:#1e1e2e,color:#fff,stroke:#f0a500\n    style IC fill:#1e1e2e,color:#fff,stroke:#f0a500\n    style MP fill:#1e1e2e,color:#fff,stroke:#f0a500\n    style DE fill:#1e1e2e,color:#fff,stroke:#f0a500",
+  "roles": [
+    {
+      "name": "Wade Perkins",
+      "title": "Owner/President",
+      "reports_to": null
+    },
+    {
+      "name": "Aidan",
+      "title": "Lead Estimator",
+      "reports_to": "Wade Perkins"
+    },
+    {
+      "name": "Isaac",
+      "title": "Admin/Coordinator",
+      "reports_to": "Wade Perkins"
+    },
+    {
+      "name": "Max",
+      "title": "Project Manager",
+      "reports_to": "Wade Perkins"
+    },
+    {
+      "name": "Devin",
+      "title": "Estimator",
+      "reports_to": "Aidan"
+    }
+  ]
 }
