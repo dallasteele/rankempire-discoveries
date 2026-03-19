@@ -1,30 +1,37 @@
 {
-  "mermaid": "graph TD\n    WP[Wade Perkins<br/>Owner/President] --> AE[Aidan<br/>Lead Estimator]\n    WP --> IC[Isaac<br/>Admin/Coordinator]\n    WP --> MP[Max<br/>Project Manager]\n    AE --> DE[Devin<br/>Estimator]\n    \n    style WP fill:#f0a500,color:#000,stroke:#f0a500\n    style AE fill:#1e1e2e,color:#fff,stroke:#f0a500\n    style IC fill:#1e1e2e,color:#fff,stroke:#f0a500\n    style MP fill:#1e1e2e,color:#fff,stroke:#f0a500\n    style DE fill:#1e1e2e,color:#fff,stroke:#f0a500",
+  "mermaid": "graph TD\n    DF[Dan Farnsworth<br/>President / CEO] --> NB[Nate Boyd<br/>VP / COO]\n    DF --> CR[Carl Roth<br/>Team Member]\n    DF --> IM[Ismael Martinez<br/>Team Member]\n    NB --> JV[Joey Van Noy<br/>Team Member]\n    NB --> RB[Rebecca Barlow<br/>Team Member]\n    \n    style DF fill:#f0a500,color:#000,stroke:#f0a500\n    style NB fill:#1e1e2e,color:#fff,stroke:#f0a500\n    style CR fill:#1e1e2e,color:#fff,stroke:#6b7280\n    style IM fill:#1e1e2e,color:#fff,stroke:#6b7280\n    style JV fill:#1e1e2e,color:#fff,stroke:#6b7280\n    style RB fill:#1e1e2e,color:#fff,stroke:#6b7280",
   "roles": [
     {
-      "name": "Wade Perkins",
-      "title": "Owner/President",
-      "reports_to": null
+      "name": "Dan Farnsworth",
+      "title": "President / CEO",
+      "reports_to": null,
+      "phone": "(480) 332-8762"
     },
     {
-      "name": "Aidan",
-      "title": "Lead Estimator",
-      "reports_to": "Wade Perkins"
+      "name": "Nate Boyd",
+      "title": "Vice President / COO",
+      "reports_to": "Dan Farnsworth",
+      "phone": "(480) 275-0447"
     },
     {
-      "name": "Isaac",
-      "title": "Admin/Coordinator",
-      "reports_to": "Wade Perkins"
+      "name": "Carl Roth",
+      "title": "Team Member",
+      "reports_to": "Dan Farnsworth"
     },
     {
-      "name": "Max",
-      "title": "Project Manager",
-      "reports_to": "Wade Perkins"
+      "name": "Ismael Martinez",
+      "title": "Team Member",
+      "reports_to": "Dan Farnsworth"
     },
     {
-      "name": "Devin",
-      "title": "Estimator",
-      "reports_to": "Aidan"
+      "name": "Joey Van Noy",
+      "title": "Team Member",
+      "reports_to": "Nate Boyd"
+    },
+    {
+      "name": "Rebecca Barlow",
+      "title": "Team Member",
+      "reports_to": "Nate Boyd"
     }
   ]
 }
