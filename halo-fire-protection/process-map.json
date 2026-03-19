@@ -1,4 +1,199 @@
 {
-  "nodes": [],
-  "edges": []
+  "nodes": [
+    {
+      "id": "n1",
+      "type": "default",
+      "position": {
+        "x": 50,
+        "y": 50
+      },
+      "data": {
+        "label": "Bid Invitation Received"
+      }
+    },
+    {
+      "id": "n2",
+      "type": "default",
+      "position": {
+        "x": 50,
+        "y": 150
+      },
+      "data": {
+        "label": "Open 57-Tab Excel Workbook"
+      }
+    },
+    {
+      "id": "n3",
+      "type": "default",
+      "position": {
+        "x": 50,
+        "y": 250
+      },
+      "data": {
+        "label": "Manual Material & Labor Lookup"
+      }
+    },
+    {
+      "id": "n4",
+      "type": "default",
+      "position": {
+        "x": 50,
+        "y": 350
+      },
+      "data": {
+        "label": "Compile Bid Manually"
+      }
+    },
+    {
+      "id": "n5",
+      "type": "default",
+      "position": {
+        "x": 300,
+        "y": 350
+      },
+      "data": {
+        "label": "Wade Reviews & Approves"
+      }
+    },
+    {
+      "id": "n6",
+      "type": "default",
+      "position": {
+        "x": 300,
+        "y": 250
+      },
+      "data": {
+        "label": "Email PDF Proposal"
+      }
+    },
+    {
+      "id": "n7",
+      "type": "default",
+      "position": {
+        "x": 300,
+        "y": 150
+      },
+      "data": {
+        "label": "Track Follow-up (Personal Notes)"
+      }
+    },
+    {
+      "id": "n8",
+      "type": "default",
+      "position": {
+        "x": 550,
+        "y": 150
+      },
+      "data": {
+        "label": "Project Won"
+      }
+    },
+    {
+      "id": "n9",
+      "type": "default",
+      "position": {
+        "x": 550,
+        "y": 250
+      },
+      "data": {
+        "label": "Isaac Re-enters Data (Double Entry)"
+      }
+    },
+    {
+      "id": "n10",
+      "type": "default",
+      "position": {
+        "x": 550,
+        "y": 350
+      },
+      "data": {
+        "label": "Max Coordinates Crew via Group Text"
+      }
+    },
+    {
+      "id": "pain1",
+      "type": "default",
+      "position": {
+        "x": 250,
+        "y": 50
+      },
+      "data": {
+        "label": "\u26a0\ufe0f PAIN: Single point of failure"
+      }
+    },
+    {
+      "id": "pain2",
+      "type": "default",
+      "position": {
+        "x": 550,
+        "y": 50
+      },
+      "data": {
+        "label": "\u26a0\ufe0f PAIN: No version control"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "source": "n1",
+      "target": "n2"
+    },
+    {
+      "id": "e2",
+      "source": "n2",
+      "target": "n3"
+    },
+    {
+      "id": "e3",
+      "source": "n3",
+      "target": "n4"
+    },
+    {
+      "id": "e4",
+      "source": "n4",
+      "target": "n5"
+    },
+    {
+      "id": "e5",
+      "source": "n5",
+      "target": "n6"
+    },
+    {
+      "id": "e6",
+      "source": "n6",
+      "target": "n7"
+    },
+    {
+      "id": "e7",
+      "source": "n7",
+      "target": "n8"
+    },
+    {
+      "id": "e8",
+      "source": "n8",
+      "target": "n9"
+    },
+    {
+      "id": "e9",
+      "source": "n9",
+      "target": "n10"
+    },
+    {
+      "id": "ep1",
+      "source": "n2",
+      "target": "pain1",
+      "style": {
+        "stroke": "#ef4444"
+      }
+    },
+    {
+      "id": "ep2",
+      "source": "n3",
+      "target": "pain2",
+      "style": {
+        "stroke": "#ef4444"
+      }
+    }
+  ]
 }
