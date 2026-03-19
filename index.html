@@ -337,7 +337,7 @@ function ProcessMapTab({ processMapData }) {
   }
   const nodes = processMapData.nodes.map(n => ({ ...n, type: 'processNode', data: { ...n.data } }));
   const edges = (processMapData.edges || []).map(e => ({ ...e, style: { stroke: '#f0a500', strokeWidth: 2 }, animated: e.animated !== false, markerEnd: { type: 'arrowclosed', color: '#f0a500' } }));
-  const RF = window.XYFlow;
+  const RF = window.ReactFlow || window.XYFlow;
   if (!RF || !RF.ReactFlow) {
     return (<div className="empty-state"><h3>Loading Process Map...</h3><p>Please wait while the library loads.</p></div>);
   }
