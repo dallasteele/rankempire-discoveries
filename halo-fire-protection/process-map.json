@@ -1,199 +1,948 @@
 {
   "nodes": [
     {
-      "id": "n1",
-      "type": "default",
+      "id": "C1",
+      "type": "input",
+      "data": {
+        "label": "Property Manager / AHJ requires inspection"
+      },
       "position": {
-        "x": 50,
+        "x": 400,
         "y": 50
       },
-      "data": {
-        "label": "Bid Invitation Received"
-      }
+      "parentId": "sg_Compliance"
     },
     {
-      "id": "n2",
+      "id": "C2",
       "type": "default",
-      "position": {
-        "x": 50,
-        "y": 150
+      "data": {
+        "label": "Compliance tracker checks due date"
       },
-      "data": {
-        "label": "Open 57-Tab Excel Workbook"
-      }
-    },
-    {
-      "id": "n3",
-      "type": "default",
       "position": {
-        "x": 50,
+        "x": 400,
         "y": 250
       },
-      "data": {
-        "label": "Manual Material & Labor Lookup"
-      }
+      "parentId": "sg_Compliance"
     },
     {
-      "id": "n4",
+      "id": "C3",
       "type": "default",
-      "position": {
-        "x": 50,
-        "y": 350
-      },
       "data": {
-        "label": "Compile Bid Manually"
-      }
+        "label": "State jurisdiction rules?"
+      },
+      "position": {
+        "x": 400,
+        "y": 450
+      },
+      "parentId": "sg_Compliance"
     },
     {
-      "id": "n5",
+      "id": "C4",
       "type": "default",
-      "position": {
-        "x": 300,
-        "y": 350
-      },
       "data": {
-        "label": "Wade Reviews & Approves"
-      }
+        "label": "Schedule inspection window"
+      },
+      "position": {
+        "x": 275,
+        "y": 650
+      },
+      "parentId": "sg_Compliance"
     },
     {
-      "id": "n6",
+      "id": "C5",
       "type": "default",
-      "position": {
-        "x": 300,
-        "y": 250
-      },
       "data": {
-        "label": "Email PDF Proposal"
-      }
+        "label": "Apply jurisdiction override rules"
+      },
+      "position": {
+        "x": 525,
+        "y": 650
+      },
+      "parentId": "sg_Compliance"
     },
     {
-      "id": "n7",
+      "id": "C6",
       "type": "default",
-      "position": {
-        "x": 300,
-        "y": 150
-      },
       "data": {
-        "label": "Track Follow-up (Personal Notes)"
-      }
+        "label": "Assign certified tech for that state"
+      },
+      "position": {
+        "x": 400,
+        "y": 850
+      },
+      "parentId": "sg_Compliance"
     },
     {
-      "id": "n8",
+      "id": "C7",
       "type": "default",
-      "position": {
-        "x": 550,
-        "y": 150
-      },
       "data": {
-        "label": "Project Won"
-      }
+        "label": "Field technician performs inspection"
+      },
+      "position": {
+        "x": 400,
+        "y": 1050
+      },
+      "parentId": "sg_Compliance"
     },
     {
-      "id": "n9",
+      "id": "C8",
       "type": "default",
-      "position": {
-        "x": 550,
-        "y": 250
-      },
       "data": {
-        "label": "Isaac Re-enters Data (Double Entry)"
-      }
+        "label": "Pass / Fail?"
+      },
+      "position": {
+        "x": 400,
+        "y": 1250
+      },
+      "parentId": "sg_Compliance"
     },
     {
-      "id": "n10",
+      "id": "C9",
       "type": "default",
-      "position": {
-        "x": 550,
-        "y": 350
-      },
       "data": {
-        "label": "Max Coordinates Crew via Group Text"
-      }
+        "label": "Generate compliance certificate"
+      },
+      "position": {
+        "x": 275,
+        "y": 1450
+      },
+      "parentId": "sg_Compliance"
     },
     {
-      "id": "pain1",
+      "id": "C10",
       "type": "default",
-      "position": {
-        "x": 250,
-        "y": 50
-      },
       "data": {
-        "label": "\u26a0\ufe0f PAIN: Single point of failure"
-      }
+        "label": "Deficiency report + repair quote"
+      },
+      "position": {
+        "x": 525,
+        "y": 1450
+      },
+      "parentId": "sg_Compliance"
     },
     {
-      "id": "pain2",
+      "id": "C11",
       "type": "default",
-      "position": {
-        "x": 550,
-        "y": 50
-      },
       "data": {
-        "label": "\u26a0\ufe0f PAIN: No version control"
-      }
+        "label": "Upload to customer portal"
+      },
+      "position": {
+        "x": 275,
+        "y": 1650
+      },
+      "parentId": "sg_Compliance"
+    },
+    {
+      "id": "C12",
+      "type": "default",
+      "data": {
+        "label": "Repair job created in ServiceTitan"
+      },
+      "position": {
+        "x": 525,
+        "y": 1650
+      },
+      "parentId": "sg_Compliance"
+    },
+    {
+      "id": "C13",
+      "type": "default",
+      "data": {
+        "label": "AHJ notification sent if required"
+      },
+      "position": {
+        "x": 275,
+        "y": 1850
+      },
+      "parentId": "sg_Compliance"
+    },
+    {
+      "id": "C14",
+      "type": "output",
+      "data": {
+        "label": "Repair scheduled  to  back to C7"
+      },
+      "position": {
+        "x": 525,
+        "y": 1850
+      },
+      "parentId": "sg_Compliance"
+    },
+    {
+      "id": "C15",
+      "type": "default",
+      "data": {
+        "label": "Next inspection date set in tracker"
+      },
+      "position": {
+        "x": 400,
+        "y": 2050
+      },
+      "parentId": "sg_Compliance"
+    },
+    {
+      "id": "D1",
+      "type": "default",
+      "data": {
+        "label": "New job created in ServiceTitan"
+      },
+      "position": {
+        "x": 400,
+        "y": 2250
+      },
+      "parentId": "sg_Dispatch"
+    },
+    {
+      "id": "D2",
+      "type": "default",
+      "data": {
+        "label": "Auto-check: tech certification for state?"
+      },
+      "position": {
+        "x": 400,
+        "y": 2450
+      },
+      "parentId": "sg_Dispatch"
+    },
+    {
+      "id": "D3",
+      "type": "default",
+      "data": {
+        "label": "Assign tech by proximity + availability"
+      },
+      "position": {
+        "x": 275,
+        "y": 2650
+      },
+      "parentId": "sg_Dispatch"
+    },
+    {
+      "id": "D4",
+      "type": "default",
+      "data": {
+        "label": "Flag to dispatcher  -  find qualified tech"
+      },
+      "position": {
+        "x": 525,
+        "y": 2650
+      },
+      "parentId": "sg_Dispatch"
+    },
+    {
+      "id": "D5",
+      "type": "default",
+      "data": {
+        "label": "Dispatch with route optimization"
+      },
+      "position": {
+        "x": 400,
+        "y": 2850
+      },
+      "parentId": "sg_Dispatch"
+    },
+    {
+      "id": "D6",
+      "type": "default",
+      "data": {
+        "label": "Tech receives job on mobile app"
+      },
+      "position": {
+        "x": 400,
+        "y": 3050
+      },
+      "parentId": "sg_Dispatch"
+    },
+    {
+      "id": "D7",
+      "type": "default",
+      "data": {
+        "label": "On-site: inspection / install / maintenance"
+      },
+      "position": {
+        "x": 400,
+        "y": 3250
+      },
+      "parentId": "sg_Dispatch"
+    },
+    {
+      "id": "D8",
+      "type": "default",
+      "data": {
+        "label": "Complete job  -  upload photos, notes, certifications"
+      },
+      "position": {
+        "x": 400,
+        "y": 3450
+      },
+      "parentId": "sg_Dispatch"
+    },
+    {
+      "id": "D9",
+      "type": "default",
+      "data": {
+        "label": "ServiceTitan job closed"
+      },
+      "position": {
+        "x": 400,
+        "y": 3650
+      },
+      "parentId": "sg_Dispatch"
+    },
+    {
+      "id": "D10",
+      "type": "default",
+      "data": {
+        "label": "Invoice generated  to  QuickBooks sync"
+      },
+      "position": {
+        "x": 400,
+        "y": 3850
+      },
+      "parentId": "sg_Dispatch"
+    },
+    {
+      "id": "D11",
+      "type": "default",
+      "data": {
+        "label": "Compliance record updated"
+      },
+      "position": {
+        "x": 400,
+        "y": 4050
+      },
+      "parentId": "sg_Dispatch"
+    },
+    {
+      "id": "B1",
+      "type": "default",
+      "data": {
+        "label": "RFP / Plan set received from GC or owner"
+      },
+      "position": {
+        "x": 400,
+        "y": 4250
+      },
+      "parentId": "sg_Bid"
+    },
+    {
+      "id": "B2",
+      "type": "default",
+      "data": {
+        "label": "Project Manager reviews plans"
+      },
+      "position": {
+        "x": 400,
+        "y": 4450
+      },
+      "parentId": "sg_Bid"
+    },
+    {
+      "id": "B3",
+      "type": "default",
+      "data": {
+        "label": "Manual takeoff: count heads, pipe footage, devices"
+      },
+      "position": {
+        "x": 400,
+        "y": 4650
+      },
+      "parentId": "sg_Bid"
+    },
+    {
+      "id": "B4",
+      "type": "default",
+      "data": {
+        "label": "Compile material list in spreadsheet"
+      },
+      "position": {
+        "x": 400,
+        "y": 4850
+      },
+      "parentId": "sg_Bid"
+    },
+    {
+      "id": "B5",
+      "type": "default",
+      "data": {
+        "label": "Price materials from supplier catalog"
+      },
+      "position": {
+        "x": 400,
+        "y": 5050
+      },
+      "parentId": "sg_Bid"
+    },
+    {
+      "id": "B6",
+      "type": "default",
+      "data": {
+        "label": "Estimate labor by state  -  prevailing wage?"
+      },
+      "position": {
+        "x": 400,
+        "y": 5250
+      },
+      "parentId": "sg_Bid"
+    },
+    {
+      "id": "B7",
+      "type": "default",
+      "data": {
+        "label": "Draft proposal in Word / PDF"
+      },
+      "position": {
+        "x": 400,
+        "y": 5450
+      },
+      "parentId": "sg_Bid"
+    },
+    {
+      "id": "B8",
+      "type": "default",
+      "data": {
+        "label": "PM review + CEO approval"
+      },
+      "position": {
+        "x": 400,
+        "y": 5650
+      },
+      "parentId": "sg_Bid"
+    },
+    {
+      "id": "B9",
+      "type": "default",
+      "data": {
+        "label": "Submit to GC / owner"
+      },
+      "position": {
+        "x": 400,
+        "y": 5850
+      },
+      "parentId": "sg_Bid"
+    },
+    {
+      "id": "B10",
+      "type": "default",
+      "data": {
+        "label": "Awarded?"
+      },
+      "position": {
+        "x": 400,
+        "y": 6050
+      },
+      "parentId": "sg_Bid"
+    },
+    {
+      "id": "B11",
+      "type": "default",
+      "data": {
+        "label": "Create project in ServiceTitan"
+      },
+      "position": {
+        "x": 275,
+        "y": 6250
+      },
+      "parentId": "sg_Bid"
+    },
+    {
+      "id": "B12",
+      "type": "default",
+      "data": {
+        "label": "Log outcome for bid tracking"
+      },
+      "position": {
+        "x": 525,
+        "y": 6250
+      },
+      "parentId": "sg_Bid"
+    },
+    {
+      "id": "B13",
+      "type": "default",
+      "data": {
+        "label": "Schedule installation crew"
+      },
+      "position": {
+        "x": 275,
+        "y": 6450
+      },
+      "parentId": "sg_Bid"
+    },
+    {
+      "id": "B14",
+      "type": "default",
+      "data": {
+        "label": "Win rate analysis  -  manual"
+      },
+      "position": {
+        "x": 525,
+        "y": 6450
+      },
+      "parentId": "sg_Bid"
+    },
+    {
+      "id": "P1",
+      "type": "default",
+      "data": {
+        "label": "Property manager logs in with access code"
+      },
+      "position": {
+        "x": 400,
+        "y": 6650
+      },
+      "parentId": "sg_Portal"
+    },
+    {
+      "id": "P2",
+      "type": "default",
+      "data": {
+        "label": "Dashboard: all properties + compliance status"
+      },
+      "position": {
+        "x": 400,
+        "y": 6850
+      },
+      "parentId": "sg_Portal"
+    },
+    {
+      "id": "P3",
+      "type": "default",
+      "data": {
+        "label": "Action needed?"
+      },
+      "position": {
+        "x": 400,
+        "y": 7050
+      },
+      "parentId": "sg_Portal"
+    },
+    {
+      "id": "P4",
+      "type": "default",
+      "data": {
+        "label": "Request inspection  -  auto-routes to dispatch"
+      },
+      "position": {
+        "x": 25,
+        "y": 7250
+      },
+      "parentId": "sg_Portal"
+    },
+    {
+      "id": "P5",
+      "type": "default",
+      "data": {
+        "label": "View deficiency report + approve repair"
+      },
+      "position": {
+        "x": 275,
+        "y": 7250
+      },
+      "parentId": "sg_Portal"
+    },
+    {
+      "id": "P6",
+      "type": "default",
+      "data": {
+        "label": "Download compliance certificate PDF"
+      },
+      "position": {
+        "x": 525,
+        "y": 7250
+      },
+      "parentId": "sg_Portal"
+    },
+    {
+      "id": "P7",
+      "type": "default",
+      "data": {
+        "label": "Submit service request  to  job queue"
+      },
+      "position": {
+        "x": 775,
+        "y": 7250
+      },
+      "parentId": "sg_Portal"
+    },
+    {
+      "id": "P8",
+      "type": "output",
+      "data": {
+        "label": "Confirmation + scheduled date returned"
+      },
+      "position": {
+        "x": 25,
+        "y": 7450
+      },
+      "parentId": "sg_Portal"
+    },
+    {
+      "id": "P9",
+      "type": "output",
+      "data": {
+        "label": "Repair authorized  to  ServiceTitan work order"
+      },
+      "position": {
+        "x": 275,
+        "y": 7450
+      },
+      "parentId": "sg_Portal"
+    },
+    {
+      "id": "P10",
+      "type": "output",
+      "data": {
+        "label": "Certificate with AHJ stamp + tech signature"
+      },
+      "position": {
+        "x": 525,
+        "y": 7450
+      },
+      "parentId": "sg_Portal"
+    },
+    {
+      "id": "P11",
+      "type": "output",
+      "data": {
+        "label": "PM notified + estimate within 24h"
+      },
+      "position": {
+        "x": 775,
+        "y": 7450
+      },
+      "parentId": "sg_Portal"
     }
   ],
   "edges": [
     {
       "id": "e1",
-      "source": "n1",
-      "target": "n2"
+      "source": "C1",
+      "target": "C2",
+      "type": "smoothstep"
     },
     {
       "id": "e2",
-      "source": "n2",
-      "target": "n3"
+      "source": "C2",
+      "target": "C3",
+      "type": "smoothstep"
     },
     {
       "id": "e3",
-      "source": "n3",
-      "target": "n4"
+      "source": "C3",
+      "target": "C4",
+      "type": "smoothstep",
+      "label": "NFPA 25 standard"
     },
     {
       "id": "e4",
-      "source": "n4",
-      "target": "n5"
+      "source": "C3",
+      "target": "C5",
+      "type": "smoothstep",
+      "label": "State-specific variant"
     },
     {
       "id": "e5",
-      "source": "n5",
-      "target": "n6"
+      "source": "C4",
+      "target": "C6",
+      "type": "smoothstep"
     },
     {
       "id": "e6",
-      "source": "n6",
-      "target": "n7"
+      "source": "C5",
+      "target": "C6",
+      "type": "smoothstep"
     },
     {
       "id": "e7",
-      "source": "n7",
-      "target": "n8"
+      "source": "C6",
+      "target": "C7",
+      "type": "smoothstep"
     },
     {
       "id": "e8",
-      "source": "n8",
-      "target": "n9"
+      "source": "C7",
+      "target": "C8",
+      "type": "smoothstep"
     },
     {
       "id": "e9",
-      "source": "n9",
-      "target": "n10"
+      "source": "C8",
+      "target": "C9",
+      "type": "smoothstep",
+      "label": "Pass"
     },
     {
-      "id": "ep1",
-      "source": "n2",
-      "target": "pain1",
-      "style": {
-        "stroke": "#ef4444"
-      }
+      "id": "e10",
+      "source": "C8",
+      "target": "C10",
+      "type": "smoothstep",
+      "label": "Fail"
     },
     {
-      "id": "ep2",
-      "source": "n3",
-      "target": "pain2",
-      "style": {
-        "stroke": "#ef4444"
-      }
+      "id": "e11",
+      "source": "C9",
+      "target": "C11",
+      "type": "smoothstep"
+    },
+    {
+      "id": "e12",
+      "source": "C10",
+      "target": "C12",
+      "type": "smoothstep"
+    },
+    {
+      "id": "e13",
+      "source": "C11",
+      "target": "C13",
+      "type": "smoothstep"
+    },
+    {
+      "id": "e14",
+      "source": "C12",
+      "target": "C14",
+      "type": "smoothstep"
+    },
+    {
+      "id": "e15",
+      "source": "C13",
+      "target": "C15",
+      "type": "smoothstep"
+    },
+    {
+      "id": "e16",
+      "source": "D1",
+      "target": "D2",
+      "type": "smoothstep"
+    },
+    {
+      "id": "e17",
+      "source": "D2",
+      "target": "D3",
+      "type": "smoothstep",
+      "label": "Certified"
+    },
+    {
+      "id": "e18",
+      "source": "D2",
+      "target": "D4",
+      "type": "smoothstep",
+      "label": "Not certified"
+    },
+    {
+      "id": "e19",
+      "source": "D3",
+      "target": "D5",
+      "type": "smoothstep"
+    },
+    {
+      "id": "e20",
+      "source": "D4",
+      "target": "D5",
+      "type": "smoothstep"
+    },
+    {
+      "id": "e21",
+      "source": "D5",
+      "target": "D6",
+      "type": "smoothstep"
+    },
+    {
+      "id": "e22",
+      "source": "D6",
+      "target": "D7",
+      "type": "smoothstep"
+    },
+    {
+      "id": "e23",
+      "source": "D7",
+      "target": "D8",
+      "type": "smoothstep"
+    },
+    {
+      "id": "e24",
+      "source": "D8",
+      "target": "D9",
+      "type": "smoothstep"
+    },
+    {
+      "id": "e25",
+      "source": "D9",
+      "target": "D10",
+      "type": "smoothstep"
+    },
+    {
+      "id": "e26",
+      "source": "D10",
+      "target": "D11",
+      "type": "smoothstep"
+    },
+    {
+      "id": "e27",
+      "source": "B1",
+      "target": "B2",
+      "type": "smoothstep"
+    },
+    {
+      "id": "e28",
+      "source": "B2",
+      "target": "B3",
+      "type": "smoothstep"
+    },
+    {
+      "id": "e29",
+      "source": "B3",
+      "target": "B4",
+      "type": "smoothstep"
+    },
+    {
+      "id": "e30",
+      "source": "B4",
+      "target": "B5",
+      "type": "smoothstep"
+    },
+    {
+      "id": "e31",
+      "source": "B5",
+      "target": "B6",
+      "type": "smoothstep"
+    },
+    {
+      "id": "e32",
+      "source": "B6",
+      "target": "B7",
+      "type": "smoothstep"
+    },
+    {
+      "id": "e33",
+      "source": "B7",
+      "target": "B8",
+      "type": "smoothstep"
+    },
+    {
+      "id": "e34",
+      "source": "B8",
+      "target": "B9",
+      "type": "smoothstep"
+    },
+    {
+      "id": "e35",
+      "source": "B9",
+      "target": "B10",
+      "type": "smoothstep"
+    },
+    {
+      "id": "e36",
+      "source": "B10",
+      "target": "B11",
+      "type": "smoothstep",
+      "label": "Yes"
+    },
+    {
+      "id": "e37",
+      "source": "B10",
+      "target": "B12",
+      "type": "smoothstep",
+      "label": "No"
+    },
+    {
+      "id": "e38",
+      "source": "B11",
+      "target": "B13",
+      "type": "smoothstep"
+    },
+    {
+      "id": "e39",
+      "source": "B12",
+      "target": "B14",
+      "type": "smoothstep"
+    },
+    {
+      "id": "e40",
+      "source": "P1",
+      "target": "P2",
+      "type": "smoothstep"
+    },
+    {
+      "id": "e41",
+      "source": "P2",
+      "target": "P3",
+      "type": "smoothstep"
+    },
+    {
+      "id": "e42",
+      "source": "P3",
+      "target": "P4",
+      "type": "smoothstep",
+      "label": "Inspection due"
+    },
+    {
+      "id": "e43",
+      "source": "P3",
+      "target": "P5",
+      "type": "smoothstep",
+      "label": "Deficiency open"
+    },
+    {
+      "id": "e44",
+      "source": "P3",
+      "target": "P6",
+      "type": "smoothstep",
+      "label": "Certificate needed"
+    },
+    {
+      "id": "e45",
+      "source": "P3",
+      "target": "P7",
+      "type": "smoothstep",
+      "label": "New service"
+    },
+    {
+      "id": "e46",
+      "source": "P4",
+      "target": "P8",
+      "type": "smoothstep"
+    },
+    {
+      "id": "e47",
+      "source": "P5",
+      "target": "P9",
+      "type": "smoothstep"
+    },
+    {
+      "id": "e48",
+      "source": "P6",
+      "target": "P10",
+      "type": "smoothstep"
+    },
+    {
+      "id": "e49",
+      "source": "P7",
+      "target": "P11",
+      "type": "smoothstep"
+    },
+    {
+      "id": "e50",
+      "source": "C15",
+      "target": "D1",
+      "type": "step"
+    },
+    {
+      "id": "e51",
+      "source": "D11",
+      "target": "B1",
+      "type": "step"
+    },
+    {
+      "id": "e52",
+      "source": "B13",
+      "target": "P1",
+      "type": "step"
+    },
+    {
+      "id": "e53",
+      "source": "B14",
+      "target": "P1",
+      "type": "step"
     }
   ]
 }
