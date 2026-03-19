@@ -1,94 +1,17 @@
 {
   "client_id": "ab02ab16",
   "slug": "halo-fire-protection",
-  "company": "Halo Fire Protection, LLC",
-  "industry": "Fire Protection / Construction",
+  "company": "Halo Fire Protection",
+  "industry": "fire protection",
   "email": "dallasteele@me.com",
   "status": "discovery",
   "access_code": "6745DE5E-91E",
-  "founded": 2007,
-  "headquarters": "Mesa, AZ (4811 E Julep St Suite 124)",
-  "employees": 26,
-  "states_licensed": 30,
-  "projects_out_of_state": "200+",
-  "leadership": {
-    "ceo": "Dan Farnsworth",
-    "coo": "Nate Boyd"
-  },
-  "services": [
-    "Fire sprinkler installation",
-    "Alarm service and monitoring",
-    "Fire extinguishers",
-    "Design and consulting",
-    "Backflow testing",
-    "Kitchen hood systems",
-    "Fire pump installation"
-  ],
-  "website": "https://halofireus.com",
-  "phone": "(480) 325-2280",
-  "service_phone": "(480) 299-5652",
-  "generator": "HAL RE / RankEmpire",
-  "tech_stack": {
-    "detected": [
-      {
-        "name": "Microsoft Dynamics CRM",
-        "category": "CRM",
-        "source": "ZoomInfo"
-      },
-      {
-        "name": "Microsoft 365",
-        "category": "Productivity Suite",
-        "source": "ZoomInfo"
-      },
-      {
-        "name": "Microsoft Exchange",
-        "category": "Email Server",
-        "source": "ZoomInfo"
-      },
-      {
-        "name": "WordPress + Divi Theme",
-        "category": "Website CMS",
-        "source": "Website scan"
-      },
-      {
-        "name": "Google reCAPTCHA",
-        "category": "Security",
-        "source": "Website scan"
-      }
-    ],
-    "likely_based_on_industry": [
-      {
-        "name": "QuickBooks or similar",
-        "category": "Accounting",
-        "confidence": "high",
-        "reason": "95% of fire protection contractors use QB"
-      },
-      {
-        "name": "Excel/Spreadsheets",
-        "category": "Estimating",
-        "confidence": "high",
-        "reason": "No dedicated estimating software detected"
-      },
-      {
-        "name": "Paper/manual dispatch",
-        "category": "Field Service",
-        "confidence": "medium",
-        "reason": "No ServiceTitan or similar FSM detected"
-      }
-    ],
-    "gaps_identified": [
-      "No client portal detected \u2014 customers likely call/email for service",
-      "No field service management (FSM) software \u2014 scheduling likely manual",
-      "No dedicated estimating tool \u2014 likely using Excel spreadsheets",
-      "No project management platform detected",
-      "No online booking/scheduling capability on website"
-    ],
-    "scrape_date": "2026-03-18",
-    "sources": [
-      "halofireus.com",
-      "LinkedIn",
-      "ZoomInfo",
-      "BuiltWith"
-    ]
-  }
+  "session_id": "6a34cdc7",
+  "session_status": "complete",
+  "has_report": true,
+  "has_diagram": true,
+  "client_created_at": "2026-03-16T08:22:12.389447",
+  "session_updated_at": "2026-03-18T20:11:18.361046",
+  "published_at": "2026-03-18T20:11:39.634686",
+  "generator": "HAL RE / RankEmpire"
 }
